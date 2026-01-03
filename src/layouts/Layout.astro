@@ -1,22 +1,35 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.vue';
+import Footer from '../components/Footer.vue';
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Astro Basics</title>
 	</head>
-	<body>
-		<slot />
+	<body class="flex min-h-screen flex-col">
+		<div class="w-full bg-[#1d1729] px-4 py-2 text-sm">testing...</div>
+		<div class="flex flex-1 flex-col px-4 lg:px-16 xl:px-32 2xl:px-48">
+			<div class="relative flex w-full flex-1">
+				<div class="hidden w-8 border-l border-white/15 lg:block"></div>
+				<div class="flex w-full flex-1 flex-col">
+					<Header />
+					<main class="flex w-full flex-1 items-center justify-center">
+						<slot />
+					</main>
+				</div>
+				<div class="hidden w-8 border-r border-white/15 lg:block"></div>
+			</div>
+			<Footer />
+		</div>
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
