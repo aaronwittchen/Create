@@ -1,7 +1,24 @@
 ---
-import '../styles/global.css';
-import Header from '../components/Header.vue';
+import { execSync } from 'child_process';
 import Footer from '../components/Footer.vue';
+import Header from '../components/Header.vue';
+import '../styles/global.css';
+
+let lastCommitDate = 'Unknown';
+try {
+	const timestamp = execSync('git log -1 --format=%ci', { encoding: 'utf-8' }).trim();
+	const date = new Date(timestamp);
+	lastCommitDate = date.toLocaleString('en-GB', {
+		timeZone: 'Europe/Berlin',
+		day: 'numeric',
+		month: 'short',
+		year: 'numeric',
+		hour: '2-digit',
+		minute: '2-digit',
+	}) + ' CET';
+} catch {
+	// Git not available or not a git repo
+}
 ---
 
 <!doctype html>
@@ -17,7 +34,7 @@ import Footer from '../components/Footer.vue';
 		<title>Astro Basics</title>
 	</head>
 	<body class="flex min-h-screen flex-col">
-		<div class="w-full bg-[#1d1729] px-4 py-2 text-sm">testing...</div>
+		<div class="w-full bg-[#1d1729] px-4 py-2 text-sm">Last updated: {lastCommitDate}</div>
 		<div class="flex flex-1 flex-col px-4 lg:px-16 xl:px-32 2xl:px-48">
 			<div class="relative flex w-full flex-1">
 				<div class="hidden w-8 border-l border-white/15 lg:block"></div>
