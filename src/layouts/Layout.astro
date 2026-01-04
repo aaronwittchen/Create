@@ -4,22 +4,26 @@ import Footer from '../components/Footer.vue';
 import Header from '../components/Header.vue';
 import '../styles/global.css';
 
+const { showLastUpdated = false } = Astro.props;
+
 // biome-ignore lint/correctness/noUnusedVariables: used in template
 let lastCommitDate = 'Unknown';
-try {
-  const timestamp = execSync('git log -1 --format=%ci', { encoding: 'utf-8' }).trim();
-  const date = new Date(timestamp);
-  lastCommitDate =
-    date.toLocaleString('en-GB', {
-      timeZone: 'Europe/Berlin',
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    }) + ' CET';
-} catch {
-  // Git not available or not a git repo
+if (showLastUpdated) {
+  try {
+    const timestamp = execSync('git log -1 --format=%ci', { encoding: 'utf-8' }).trim();
+    const date = new Date(timestamp);
+    lastCommitDate =
+      date.toLocaleString('en-GB', {
+        timeZone: 'Europe/Berlin',
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      }) + ' CET';
+  } catch {
+    // Git not available or not a git repo
+  }
 }
 ---
 
@@ -36,19 +40,17 @@ try {
 		<title>Astro Basics</title>
 	</head>
 	<body class="flex min-h-screen flex-col">
-		<div class="w-full bg-[#1d1729] px-4 py-2 text-sm">Last updated: {lastCommitDate}</div>
-		<div class="flex flex-1 flex-col px-4 lg:px-16 xl:px-32 2xl:px-48">
-			<div class="relative flex w-full flex-1">
-				<div class="hidden w-8 border-l border-white/15 lg:block"></div>
-				<div class="flex w-full flex-1 flex-col">
-					<Header />
-					<main class="flex w-full flex-1 items-center justify-center">
-						<slot />
-					</main>
-				</div>
-				<div class="hidden w-8 border-r border-white/15 lg:block"></div>
+		{showLastUpdated && <div class="w-full bg-[#1d1729] px-4 py-2 text-sm">Last updated: {lastCommitDate}</div>}
+		<div class="flex flex-1 px-4 lg:px-16 xl:px-32 2xl:px-48">
+			<div class="hidden w-8 border-l border-white/15 lg:block"></div>
+			<div class="flex w-full flex-1 flex-col">
+				<Header />
+				<main class="flex w-full flex-1 items-center justify-center">
+					<slot />
+				</main>
+				<Footer client:load />
 			</div>
-			<Footer />
+			<div class="hidden w-8 border-r border-white/15 lg:block"></div>
 		</div>
 	</body>
 </html>
