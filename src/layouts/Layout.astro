@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import { execSync } from 'node:child_process';
 import Footer from '../components/Footer.vue';
 import Header from '../components/Header.vue';
@@ -38,17 +39,18 @@ if (showLastUpdated) {
 		<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Astro Basics</title>
+		<ClientRouter />
 	</head>
 	<body class="flex min-h-screen flex-col">
 		{showLastUpdated && <div class="w-full bg-[#1d1729] px-4 py-2 text-sm">Last updated: {lastCommitDate}</div>}
 		<div class="flex flex-1 px-4 lg:px-16 xl:px-32 2xl:px-48">
 			<div class="hidden w-8 border-l border-white/15 lg:block"></div>
 			<div class="flex w-full flex-1 flex-col">
-				<Header />
+				<Header transition:persist />
 				<main class="flex w-full flex-1 items-center justify-center">
 					<slot />
 				</main>
-				<Footer client:load />
+				<Footer client:load transition:persist />
 			</div>
 			<div class="hidden w-8 border-r border-white/15 lg:block"></div>
 		</div>
